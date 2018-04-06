@@ -1,0 +1,379 @@
+<?php
+$a='';
+require('database.php');
+$a=$_GET['id'];
+if(isset($_{POST['id']))
+{
+$sql_query="SELECT * FROM details WHERE id='$a'";
+ $result_set=mysql_query($sql_query);
+ $row=mysql_fetch_array($result_set);
+}
+
+	echo"<table>";
+     echo "<tr>";
+      $a = htmlspecialchars($row['1']);
+      $name = htmlspecialchars($row['2']);
+	  $gender = htmlspecialchars($row['4']);
+
+	  $email= htmlspecialchars($row['5']);
+	  $description= htmlspecialchars($row['6']);
+	 $qualification = htmlspecialchars($row['7']);
+	 
+	 $birthdate = htmlspecialchars($row['8']);
+	
+     echo "</tr>";
+
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+
+ <meta charset="utf-8">
+
+<script type="text/javascript" src="validation.js" ></script>
+<link rel="stylesheet" type="text/css" href="external.css">
+</head>
+<body>
+<p><span class="error">* required field.</span></p>
+<div id ="valid">
+<form action="edii.php" name="form1" method="POST" onsubmit="return validateform()">
+ Name:</br>
+  <input type="text" name="name" id="txt">
+  <span class="error">*</span>
+  </br>
+ Email :<br>
+  <input type="text" name="email" id="txtemail">
+  
+  <br>
+  Decription:<br>
+     <textarea name="comment" rows="5" cols="40" id ="comm"></textarea>
+  <br><br>
+  Gender:</br>
+  <input type="radio" name="gender" value="female" id = "male" >Female
+  <input type="radio" name="gender" value="male" id = "female" >Male
+  <br><br>
+  Qualification:<span class="error">* </span><br>
+  <input type="checkbox" name="qual[]" value="ssc" id="ssc" >SSC<br>
+<input type="checkbox" name="qual[]" value="hsc" id="hsc" >HSC<br>
+<input type="checkbox" name="qual[]" value="graduate" id="grad" >GRADUATE<br>
+ 
+ <br><br>
+  <span class="error">* </span> Birthyear:  <select name="year" id = "date"> 
+   <option style="display:none" disabled selected value>Select a year</option>
+   <option value="1995" >1995</option>
+    <option value="1996">1996</option>
+    <option value="1997">1997</option>
+    <option value="1998">1998</option>
+   <span class="error">* </span>
+  </select>
+ <br><br>
+ <button type="reset" value="RESET" onclick="alert('values has been reset')" id="set" >Reset</button>
+ <input type="submit"  name="submit" value="Submit" id="conform"> 
+ </form>
+</div>
+
+</body>
+</html>
+<?php
+// $nameerr=$qualificationerr=$yearerr="";
+require('database.php');
+
+// $emailerr="";
+// $email=trim($_POST['email']);
+// header('Content-Type: text/html; charset=ISO-8859-1');
+// $nameerr=$qualificationerr=$yearerr="";
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+// $nameerr=$qualificationerr=$yearerr="";
+  
+	$email=trim($_POST['email']);
+ // header('Content-Type: text/html; charset=ISO-8859-1');
+   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+   echo  "Invalid email format"; 
+   return false;
+   }
+   if (empty($_POST['name']) || empty($_POST['qual']) || empty($_POST['year'] )||  empty($_POST['gender']) ||  empty($_POST['year']) ) {
+   echo "You did not fill out the required fields.";
+    }
+  
+   // if(empty($_POST['qual'])){
+	   // echo "qualification is required"; 
+   // }
+  // if (empty($_POST['year'] )) {
+   // echo "year is required";
+  // }
+  else{
+   // $chckbox=array('ssc','hsc','graduate');
+  $user_check=$_POST['qual'];
+    $rec=""; 
+   $flag=0; 
+    foreach($user_check as $entry){ 
+   $rec .= $entry.","; 
+  $flag=1; 
+   } 
+  if($flag==1){ 
+  $rec=rtrim($rec); 
+   } 
+	
+	$user_name=$_POST['name'];
+	$user_sex=$_POST['gender'];
+	 $user_email=$_POST['email'];
+	   $user_description= mysql_real_escape_string($_POST['comment']);
+	 $user_description= mysql_real_escape_string($_POST['comment']);
+	 $answers=$_POST['year'];
+	// $checkbox = array("res" => $user_check);
+	// $pets = implode( ',',$checkbox);
+	
+	$sql="INSERT INTO details (id,name,gender,email,description,qualification,birthdate) VALUES (NULL,'$user_name','$user_sex','$user_email','$user_description','$rec','$answers')";
+	  $result=mysql_query($sql);
+	// }
+	// $id=mysql_insert_id();
+	// $values=array();
+	// foreach($chckbox as $selection){
+		// if(in_array($selection, $user_check))
+    // {
+        // $values[ $selection ] = 1;
+    // } else {
+        // $values[ $selection ] = 0;
+    // }
+	// }
+	// $r2=mysql_query("
+    // UPDATE details
+        // SET
+        // `ssc` = '".$values['ssc']."',
+        // `hsc` = '".$values['hsc']."',
+        // `graduate` = '".$values['graduate']."'
+    // WHERE
+        // id =".$id.";
+// ")
+	if($result)
+{
+	echo "list created succesfully";
+}
+else
+{
+	echo "error";
+}
+	
+	
+}
+}
+// echo $user_description;
+	 // mysql_real_escape_string($user_description);
+	
+	// for($i=0;$i<sizeof($user_check);$i++){
+	// $query="INSERT INTO form (qualification) VALUES('".$user_check[$i]."')";
+  // mysql_query($query);
+	// }
+	// }
+	// if($result)
+// {
+	// echo "list created succesfully";
+// }
+// else
+// {
+	// echo "error";
+// }
+// }
+	// for($i=0;sizeof($user_check);$i++){
+	// $query="INSERT INTO form (qualification) VALUES('".$user_check[$i]."')";
+  // mysql_query($query);
+  // $result= $conn->exec($sql);
+	  
+	 
+     // mysql_real_escape_string($user_description);
+	
+  
+  
+ // function test_input($data) {
+  // $data = trim($data);
+  // $data = stripslashes($data);
+  // $data = htmlspecialchars($data);
+  // return $data;
+
+ ?>
+
+$user_fname=$_GET['update_fnamee'];
+$user_fname=$_GET['update_fnamee'];
+$user_lname=$_GET['update_lnamee'];
+$user_no=$_GET['user_noo'];
+$user_city=$_GET['update_city'];
+$user_mob=$_GET['emp_mo'];
+$user_email=$_GET['user_email'];
+echo$user_image=$_GET['user_image'];
+$user_dob=$_GET['user_dob'];
+
+echo"$img";
+
+function update_fname($f1,$f2)
+{
+	$f1;
+	$sql="UPDATE manage_list SET FirstName='$f2' where user_no='$f1'";
+	$first=mysql_query($sql);
+	if($first)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+
+}
+function update_lnamee($l1,$l2)
+{
+
+	$sql="UPDATE manage_list SET LastName='$l2' where user_no='$l1'";	
+	$last=mysql_query($sql);
+	if($last)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+function update_city($c1,$c2)
+{
+
+	$sql="UPDATE manage_list SET user_city='$c2' where user_no='$c1'";	
+	$city=mysql_query($sql);
+	if($city)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+function update_mobile($m1,$m2)
+{
+
+	$sql="UPDATE manage_list SET user_mobile_no='$m2' where user_no='$m1'";	
+	$mobile=mysql_query($sql);
+	if($mobile)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+function update_mail($e1,$e2)
+{
+
+	$sql1="UPDATE manage_list SET user_email='$e2' where user_no='$e1'";	
+	$mail=mysql_query($sql1);
+	if($mail)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+function update_dob($dob1,$dob2)
+{
+
+	$sql1="UPDATE manage_list SET user_dob='$dob2' where user_no='$dob1'";	
+	$dobb=mysql_query($sql1);
+	if($dobb)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+
+function update_img($p1,$p2)
+{
+
+	$sql1="UPDATE manage_list SET user_img='$p2' where user_no='$p1'";	
+	$img=mysql_query($sql1);
+	if($img)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+function update_lang($l1,$l2)
+{
+
+	echo$sql1="UPDATE manage_list SET user_lang='$l2' where user_no='$l1'";	
+	$lang=mysql_query($sql1);
+	if($lang)
+	{
+		//echo"The first name is updated ";
+	}
+	else
+	{
+		echo"error";
+		mysql_error();
+	
+	}
+}
+if(isset($_REQUEST['submit']))
+{
+
+	update_fname($user_no,$user_fname);
+	update_lnamee($user_no,$user_lname);
+	update_city($user_no,$user_city);
+	update_mobile($user_no,$user_mob);
+	update_mail($user_no,$user_email);
+	update_dob($user_no,$user_dob);
+	update_img($user_no,$user_image);
+	update_lang($user_no,$chk );
+	echo"<script type='text/javascript'>alert('Your data has updated successfully!')</script>";
+	
+	if(isset($_GET['user_image']))
+	{
+		
+		echo$sql1="UPDATE manage_list SET user_img='$user_image' where user_no='$user_no'";	
+		$p=mysql_query($sql1);
+		if($p)
+		{
+			//echo"The first name is updated ";
+		}
+		else
+		{
+			echo"error";
+			mysql_error();
+	
+		}
+	}
+	else
+	{
+	
+		echo"$img";
+	}
+	
+	
+}

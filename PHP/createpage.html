@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+
+<script type="text/javascript" src="validation.js" ></script>
+
+<style>
+.error {color: #FF0000;}
+</style>
+</head>
+<body>
+<p><span class="error">* required field.</span></p>
+<div>
+<form action="validation.php" name="form1" method="POST" onsubmit="return validateform()">
+ Name:</br>
+  <input type="text" name="name" >
+  <span class="error">*</span>
+  </br>
+ Email :<br>
+  <input type="text" name="email" id="txtemail">
+  
+  <br>
+  Decription:<br>
+     <textarea name="comment" rows="5" cols="40" ></textarea>
+  <br><br>
+  Gender:</br>
+  <input type="radio" name="gender" value="female" id = "male">Female
+  <input type="radio" name="gender" value="male" id = "female">Male
+  <br><br>
+  Qualification:<span class="error">* </span><br>
+  <input type="checkbox" name="qual[]" value="ssc" id="ssc" >SSC<br>
+<input type="checkbox" name="qual[]" value="hsc" id="hsc" >HSC<br>
+<input type="checkbox" name="qual[]" value="graduate" id="grad">GRADUATE<br>
+ 
+ <br><br>
+  <span class="error">* </span> Birthyear:  <select name="year" id = "date"> 
+   <option style="display:none" disabled selected value>Select a year</option>
+   <option value="1995" >1995</option>
+    <option value="1996">1996</option>
+    <option value="1997">1997</option>
+    <option value="1998">1998</option>
+   <span class="error">* </span>
+  </select>
+ <br><br>
+ <button type="reset" value="RESET" onclick="alert('values has been reset')" >Reset</button>
+ <input type="submit"  name="submit" value="Submit" > 
+ </form>
+</div>
+</body>
+</html>
