@@ -1,0 +1,4 @@
+http://localhost/magento/
+http://localhost/magento/admin
+ravi:username
+password:admin123
